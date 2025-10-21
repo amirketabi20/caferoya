@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منوی کافه</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #F5F5DC 0%, #E8DCC4 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .header h1 {
+            color: #FFF8DC;
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            color: #F5DEB3;
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+        
+        .cart-icon {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            background: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .cart-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .cart-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: #6F4E37;
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #DC143C;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: 700;
+        }
+        
+        .menu-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #6F4E37;
+            margin-bottom: 30px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #6F4E37, #D4A574);
+            border-radius: 2px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+        
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(111, 78, 55, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(111, 78, 55, 0.25);
+        }
+        
+        .item-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-item:hover .item-image {
+            transform: scale(1.1);
+        }
+        
+        .image-container {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .item-details {
+            padding: 20px;
+        }
+        
+        .item-name {
+            font-size: 1.5em;
+            color: #6F4E37;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .item-description {
+            color: #8B6F47;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+        }
+        
+        .menu-item:hover .item-description {
+            height: auto;
+            opacity: 1;
+            margin-bottom: 15px;
+        }
+        
+        .item-ingredients {
+            background: #FFF8DC;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #6F4E37;
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: height 0.3s ease, opacity 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+        }
+        
+        .menu-item:hover .item-ingredients {
+            height: auto;
+            opacity: 1;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .item-price {
+            font-size: 1.2em;
+            color: #8B6F47;
+            font-weight: 700;
+        }
+        
+        .price-badge {
+            background: linear-gradient(135deg, #6F4E37, #8B6F47);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        
+        .add-to-cart-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+        }
+        
+        .add-to-cart-btn:hover {
+            background: linear-gradient(135deg, #218838, #1ba97d);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.5);
+        }
+        
+        .add-to-cart-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cart-modal.show {
+            display: flex;
+        }
+        
+        .cart-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #6F4E37;
+            padding-bottom: 15px;
+        }
+        
+        .cart-header h2 {
+            color: #6F4E37;
+            font-size: 2em;
+        }
+        
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 2em;
+            color: #6F4E37;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #FFF8DC;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .cart-item-name {
+            font-weight: 600;
+            color: #6F4E37;
+        }
+        
+        .cart-item-price {
+            color: #8B6F47;
+            font-weight: 700;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 40px;
+            color: #8B6F47;
+            font-size: 1.2em;
+        }
+        
+        .cart-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #6F4E37;
+            text-align: left;
+            font-size: 1.5em;
+            color: #6F4E37;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="cart-icon" onclick="toggleCart()">
+            <svg viewBox="0 0 24 24">
+                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <span class="cart-badge" id="cartCount">0</span>
+        </div>
+        <h1>☕ کافه رویایی ☕</h1>
+        <p>بهترین قهوه‌ها و نوشیدنی‌ها را با ما تجربه کنید</p>
+    </div>
+    
+    <div class="notification" id="notification">
+        محصول به سبد خرید اضافه شد! ✓
+    </div>
+    
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>🛒 سبد خرید</h2>
+                <button class="close-cart" onclick="toggleCart()">×</button>
+            </div>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal"></div>
+        </div>
+    </div>
+    
+    <div class="menu-container">
+        <!-- نوشیدنی‌های گرم -->
+        <div class="section">
+            <h2 class="section-title">☕ نوشیدنی‌های گرم</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&h=500&fit=crop" alt="اسپرسو" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">اسپرسو</h3>
+                        <p class="item-description">قهوه غلیظ و خوش‌عطر ایتالیایی</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> دانه قهوه عربیکا تازه آسیاب شده، آب خالص
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۴۵,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('اسپرسو', 45000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&h=500&fit=crop" alt="کاپوچینو" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">کاپوچینو</h3>
+                        <p class="item-description">ترکیب هماهنگ اسپرسو و شیر بخار داده شده</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> اسپرسو، شیر تازه، فوم شیر، پودر کاکائو
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۶۵,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('کاپوچینو', 65000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop" alt="لاته" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">کافه لاته</h3>
+                        <p class="item-description">اسپرسو با شیر ملایم و کرمی</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> اسپرسو دوبل، شیر بخار داده شده، فوم شیر نازک
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۷۰,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('کافه لاته', 70000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&h=500&fit=crop" alt="موکا" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">موکا</h3>
+                        <p class="item-description">قهوه شکلاتی خوشمزه</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> اسپرسو، شکلات داغ، شیر، خامه، پودر کاکائو
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۷۵,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('موکا', 75000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- نوشیدنی‌های سرد -->
+        <div class="section">
+            <h2 class="section-title">🧊 نوشیدنی‌های سرد</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop" alt="آیس لاته" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">آیس لاته</h3>
+                        <p class="item-description">قهوه سرد و خنک با شیر</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> اسپرسو، شیر سرد، یخ، سیروپ وانیل (اختیاری)
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۷۵,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('آیس لاته', 75000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1546173159-315724a31696?w=500&h=500&fit=crop" alt="فراپوچینو" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">فراپوچینو</h3>
+                        <p class="item-description">نوشیدنی یخ زده و خامه‌ای</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> قهوه، شیر، یخ، خامه، سیروپ کارامل، پودر کاکائو
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۸۵,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('فراپوچینو', 85000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=500&fit=crop" alt="اسموتی" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">اسموتی میوه‌ای</h3>
+                        <p class="item-description">نوشیدنی تازه و سرشار از میوه</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> توت فرنگی، موز، انبه، ماست، عسل، یخ
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۸۰,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('اسموتی میوه‌ای', 80000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- غذاها و دسرها -->
+        <div class="section">
+            <h2 class="section-title">🍰 دسرها و غذاها</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&h=500&fit=crop" alt="کیک شکلاتی" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">کیک شکلاتی</h3>
+                        <p class="item-description">کیک خوشمزه و نرم با روکش شکلات</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> شکلات تلخ، آرد، تخم مرغ، شکر، کره، کاکائو
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۹۰,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('کیک شکلاتی', 90000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=500&h=500&fit=crop" alt="چیزکیک" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">چیزکیک توت فرنگی</h3>
+                        <p class="item-description">چیزکیک کرمی با سس توت فرنگی</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> پنیر خامه‌ای، بیسکویت، کره، توت فرنگی تازه، شکر
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۹۵,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('چیزکیک توت فرنگی', 95000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&h=500&fit=crop" alt="ساندویچ" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">ساندویچ کلاب</h3>
+                        <p class="item-description">ساندویچ سه طبقه با مرغ و سبزیجات</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> نان تست، سینه مرغ، کاهو، گوجه، پنیر، سس مخصوص
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۱۲۰,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('ساندویچ کلاب', 120000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1549312185-f42f1ea8f93a?w=500&h=500&fit=crop" alt="کروسان" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">کروسان</h3>
+                        <p class="item-description">کروسان تازه و کره‌ای</p>
+                        <div class="item-ingredients">
+                            <strong>مواد تشکیل دهنده:</strong> آرد، کره، شیر، خمیرمایه، تخم مرغ، شکر
+                        </div>
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-badge">۵۵,۰۰۰ تومان</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('کروسان', 55000)">افزودن به سبد</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let cart = [];
+        
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCartCount();
+            showNotification();
+        }
+        
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+        
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+        
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('show');
+            if (modal.classList.contains('show')) {
+                displayCart();
+            }
+        }
+        
+        function displayCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">سبد خرید شما خالی است</div>';
+                cartTotal.innerHTML = '';
+                return;
+            }
+            
+            let total = 0;
+            let html = '';
+            
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `
+                    <div class="cart-item">
+                        <span class="cart-item-name">${item.name}</span>
+                        <span class="cart-item-price">${item.price.toLocaleString('fa-IR')} تومان</span>
+                    </div>
+                `;
+            });
+            
+            cartItems.innerHTML = html;
+            cartTotal.innerHTML = `جمع کل: ${total.toLocaleString('fa-IR')} تومان`;
+        }
+    </script>
+</body>
+</html>
